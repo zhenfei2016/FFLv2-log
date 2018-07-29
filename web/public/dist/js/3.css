@@ -1,0 +1,78 @@
+.pesudo {
+  content: "";
+  display: block; }
+
+.timeLine {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  padding: 10px; }
+  .timeLine .timeLineBox {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    border-right: rgba(143, 105, 105, 0.87) solid 1px; }
+    .timeLine .timeLineBox li {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      text-align: right;
+      width: 100%;
+      padding-right: 10px;
+      font-size: 14px; }
+      .timeLine .timeLineBox li::before {
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: -2.5px;
+        border-radius: 50%;
+        width: 5px;
+        height: 5px;
+        background: #ff5e01;
+        content: ""; }
+  .timeLine .timeLineBlock {
+    position: absolute;
+    left: 100px;
+    top: 0px; }
+    .timeLine .timeLineBlock li {
+      height: 100%;
+      background: rgba(236, 209, 201, 0.507);
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      cursor: pointer;
+      text-align: center; }
+      .timeLine .timeLineBlock li h6 {
+        font-size: 14px;
+        font-weight: normal;
+        height: 20px;
+        color: #fff;
+        border: #ccc solid 1px;
+        border-left: none;
+        background: rgba(202, 161, 149, 0.555); }
+      .timeLine .timeLineBlock li:first-child h6 {
+        border-left: #ccc solid 1px; }
+      .timeLine .timeLineBlock li div.content {
+        position: relative;
+        left: 0px;
+        top: 0px;
+        top: 20px; }
+        .timeLine .timeLineBlock li div.content span {
+          position: absolute;
+          left: 0px;
+          top: 0px;
+          width: 10px;
+          /* &::before{ @extend .pesudo; 
+                      border-left:$border3;
+                      height:100%;
+                      display: inline-block;text-align: center
+                    } */ }
+          .timeLine .timeLineBlock li div.content span i {
+            position: absolute;
+            top: 0px;
+            left: 0;
+            font-style: none;
+            font-size: 12px; }
+      .timeLine .timeLineBlock li:nth-child(even) {
+        background: #f7f0f0; }
+

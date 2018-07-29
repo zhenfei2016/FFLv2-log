@@ -1,0 +1,9 @@
+@mixin absolute($left:0px,$top:0px){
+    position: absolute;
+    left:$left;top:$top
+}
+@mixin relative($left:0px,$top:0px){
+    position: relative;
+    left:$left;top:$top
+}
+.pesudo{ content:"";display: block; }
