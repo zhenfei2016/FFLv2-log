@@ -10737,7 +10737,7 @@ var serviceIndex = (0, _decoratorIndex2.default)(_class = function serviceIndex(
         count = _ref$count === undefined ? 10 : _ref$count;
 
     console.log("production");
-    var url =  true ? "http://192.168.1.115:5000/FFLv2?getTrackList" : undefined;
+    var url =  true ? "http://127.0.0.1:5000/FFLv2?getTrackList" : undefined;
     //let url = "http://192.168.1.115:5000/FFLv2?getTrackList";
     //this.$axios.get(url,{params:{page,count}})
     return _this.$axios.get(url).then(_this.success).then(function (da) {
@@ -10748,7 +10748,7 @@ var serviceIndex = (0, _decoratorIndex2.default)(_class = function serviceIndex(
   };
 
   this.getTestTW = function () {
-    var url = "http://192.168.1.154:5000/FFLv2?getLogList";
+    var url = "http://127.0.0.1:5000/FFLv2?getLogList";
     return _this.$axios.get(url).then(_this.success).then(function (da) {
       return da;
     }).catch(function (e) {

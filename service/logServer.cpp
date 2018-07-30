@@ -6,29 +6,61 @@
 
 #include <utils/FFL_StringHelper.hpp>
 
+
+class  LogMap {
+	public:
+		void add(uint8_t* data, int32_t len) {
+			FFL::String info;
+			info = (const char*)data;
+
+			FFL::CMutex::Autolock l(mLock);
+			while (mLogList.size() > 20) {
+				mLogList.pop_front();
+			}
+
+			mLogList.push_back(info);
+		}
+
+		void getJson(FFL::String& jsonList) {
+			FFL::CMutex::Autolock l(mLock);		
+			if (mLogList.size() < 3) {
+				return;
+			}
+
+			int32_t count = 0;
+			while (mLogList.size() > 0) {
+				FFL::String json;
+				json= mLogList.front();
+				mLogList.pop_front();
+
+				if (jsonList.size() == 0) {
+					jsonList = json;
+				}
+				else
+				{
+					jsonList = jsonList + "\n" + json;
+				}
+				count++;
+				if (count >= 3) {
+					break;
+				}
+			}
+		}
+
+		FFL::List< FFL::String > mLogList;
+		FFL::CMutex mLock;
+};
+static LogMap  gLogMap;
 static int32_t gId=0;
 class HttpApiGetLogListHandelr : public FFL::HttpApiHandler{
 public:
-    virtual void onHttpQuery(FFL::HttpConnect* conn, FFL::String& path, FFL::String& query){
-        FFL::String json;     
+    virtual void onHttpQuery(FFL::HttpConnect* conn,FFL::String& query,FFL::HttpRequest* req){                 
+        FFL::String jsonlist;        
+		gLogMap.getJson(jsonlist);
         
-        FFL::String jsonlist;
+      //  jsonlist="[" +jsonlist + "]";
         
-        int32_t id=gId+9;
-        for(int32_t i=0;i<10;i++){
-            FFL::formatString(json,"{\"id\":%d}",id--);
-            
-            if(jsonlist.size()!=0){
-              jsonlist +=","+ json ;
-            }else{
-               jsonlist +=json ;
-            }
-        }
-        
-        gId +=10;
-        jsonlist="[" +jsonlist + "]";
-        
-		if (json.size() > 0) {
+		if (jsonlist.size() > 0) {
 			conn->createResponse()->writeJson(jsonlist);
 		}
 		conn->realese();
@@ -90,15 +122,47 @@ static CmdOption  gCmdOption[] = {
 	{ 0,0,0,0 },
 };
 
+
+class MyTcpConnect : public FFL::TcpConnect {
+public:
+	MyTcpConnect(NetFD fd,FFL::NetServer* srv): FFL::TcpConnect(fd), mSocket(fd){
+	}
+
+	virtual bool process() {
+		uint8_t buf[4096] = {};
+		size_t readed=0;
+		mSocket.read(buf,4095,&readed);
+
+		if (readed > 0) {
+			gLogMap.add(buf, readed);
+		}
+
+		return true;			 
+	}
+
+	FFL::CSocket mSocket;
+};
 int serverMain() {
+	//
+	//  http  server
+	//
 	FFL::HttpConnectMgr mgr;    
     FFL::sp<FFL::HttpApiHandler> handler=new HttpApiGetLogListHandelr();
     mgr.registerApi("/FFLv2?getLogList", handler);
 	mgr.setFileHandler(new HttpCommFileHandelr());
-
 	FFL::TcpServer server(NULL,5000);
 	server.setConnectManager(&mgr);
 	server.start();
+
+
+	//
+	//  tcp  server
+	//
+	FFL::TcpServer tcpServer(NULL, 5100);
+	FFL::SimpleConnectManager<MyTcpConnect> tcpMgr;
+	tcpServer.setConnectManager(&tcpMgr);
+	tcpServer.start();
+
 	//
 	//  打印一下帮助函数
 	//
