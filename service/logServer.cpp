@@ -68,6 +68,7 @@ public:
     
 };
 
+extern const char* gExePath;
 
 class HttpCommFileHandelr : public FFL::HttpFileHandler {
 	//
@@ -79,8 +80,12 @@ class HttpCommFileHandelr : public FFL::HttpFileHandler {
 		char processname[1024] = { 0 };
 		FFL_getCurrentProcessPath(processdir, 1023, processname);
         
+        FFL::String fullpath=gExePath;
+        fullpath +="/../" +path;
 		strcat(processdir, path.c_str());
-		res->response(processdir);
+        
+        printf("file:%s",fullpath.c_str());
+		res->response(fullpath.c_str());
 		conn->realese();
 		return true;
 	}
@@ -131,7 +136,10 @@ public:
 	virtual bool process() {
 		uint8_t buf[4096] = {};
 		size_t readed=0;
-		mSocket.read(buf,4095,&readed);
+        if(FFL_OK!=mSocket.read(buf,4095,&readed)){
+            printf("socket read failed");
+            return false;
+        }
 
 		if (readed > 0) {
 			gLogMap.add(buf, readed);

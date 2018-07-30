@@ -86,12 +86,16 @@ int printLog(int level,const char* tag, const char *format, va_list v)
 }
 #endif
 extern int serverMain();
-
+const char* gExePath;
 extern "C" int main(int argc ,const char* argv[]) {	
-	FFL::startMemoryWatch(); 	
+	FFL::startMemoryWatch();
+ 
+    gExePath=FFL_strdup(argv[0]);
+    
 #if WIN32
 //	FFL_LogHook(printLogAll);
 #endif
+    
     FFL_LogSetLevel(FFL_LOG_LEVEL_ALL);
 	//FFL_LogSetLevel(FFL_LOG_LEVEL_WARNING);
 	FFL_LOG_INFO("start track server");

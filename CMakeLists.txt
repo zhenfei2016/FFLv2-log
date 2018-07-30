@@ -24,13 +24,15 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
+#  Ê bin
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
+#   lib
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../lib)
 
-#  Êä³öÂ·¾¶ bin
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 ADD_EXECUTABLE(FFLv2-log  ${LOCAL_SRC_FILES})
 TARGET_LINK_LIBRARIES(FFLv2-log FFL)
 
 add_custom_command(TARGET FFLv2-log POST_BUILD  
-  COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/bin/Debug/
+  COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/Debug/
    )
 
