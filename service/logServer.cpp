@@ -9,6 +9,9 @@
 
 class  LogMap {
 	public:
+		LogMap() {
+			mIndex = 0;
+		}
 		void add(uint8_t* data, int32_t len) {
 			FFL::String info;
 			info = (const char*)data;
@@ -21,16 +24,17 @@ class  LogMap {
 			mLogList.push_back(info);
 		}
 
+		int mIndex;
 		void getJson(FFL::String& jsonList) {
 			FFL::CMutex::Autolock l(mLock);		
-			if (mLogList.size() < 3) {
+			if (mLogList.size() < 1) {
 				return;
 			}
 
 			int32_t count = 0;
 			while (mLogList.size() > 0) {
 				FFL::String json;
-				json= mLogList.front();
+				json = mLogList.front();
 				mLogList.pop_front();
 
 				if (jsonList.size() == 0) {
@@ -41,7 +45,7 @@ class  LogMap {
 					jsonList = jsonList + "\n" + json;
 				}
 				count++;
-				if (count >= 3) {
+				if (count >= 10) {
 					break;
 				}
 			}
@@ -111,7 +115,7 @@ void stopService(const char* args, void* userdata) {
 
 void openTool(const char* args, void* userdata) {
 #if WIN32
-	//ShellExecuteA(NULL,"open", "http://127.0.0.1:5000/timeline.html", NULL, NULL, SW_SHOW);
+	//ShellExecuteA(NULL,"open", "http://127.0.0.1:5000/index.html", NULL, NULL, SW_SHOW);
 #else
     printf("failed to openTool. \n");
 #endif
