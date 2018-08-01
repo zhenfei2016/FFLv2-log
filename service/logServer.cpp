@@ -17,7 +17,7 @@ class  LogMap {
 			info = (const char*)data;
 
 			FFL::CMutex::Autolock l(mLock);
-			while (mLogList.size() > 20) {
+			while (mLogList.size() > 100) {
 				mLogList.pop_front();
 			}
 
@@ -45,7 +45,7 @@ class  LogMap {
 					jsonList = jsonList + "\n" + json;
 				}
 				count++;
-				if (count >= 10) {
+				if (count >= 50) {
 					break;
 				}
 			}
@@ -115,7 +115,7 @@ void stopService(const char* args, void* userdata) {
 
 void openTool(const char* args, void* userdata) {
 #if WIN32
-	//ShellExecuteA(NULL,"open", "http://127.0.0.1:5000/index.html", NULL, NULL, SW_SHOW);
+	ShellExecuteA(NULL,"open", "http://127.0.0.1:5000/index.html", NULL, NULL, SW_SHOW);
 #else
     printf("failed to openTool. \n");
 #endif
@@ -127,7 +127,7 @@ static CmdOption  gCmdOption[] = {
 	//{ "start",0,startService,"start service" },
 	//{ "restart",0,restartService,"re start service" },
 	//{ "stop",0,stopService,"stop service" },
-	//{ "open",0,openTool,"open timeline tool" },
+	{ "open",0,openTool,"open log tool" },
 	{ 0,0,0,0 },
 };
 
@@ -165,7 +165,7 @@ int serverMain() {
 	FFL::TcpServer server(NULL,5000);
 	server.setConnectManager(&mgr);
 	server.start();
-
+	FFL_LOG_INFO("start http server, port=5000");
 
 	//
 	//  tcp  server
@@ -175,11 +175,11 @@ int serverMain() {
 	tcpServer.setConnectManager(&tcpMgr);
 	tcpServer.start();
 
+	openTool(0, 0);
 	//
 	//  打印一下帮助函数
 	//
 	FFL_cmdUsage(gCmdOption);
-
-	FFL_inputLooper(gCmdOption, 0, quitFlag);
+	FFL_cmdLooper(gCmdOption, 0, quitFlag);
 	return 0;
 }
