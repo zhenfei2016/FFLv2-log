@@ -2,8 +2,12 @@ cmake_minimum_required(VERSION 3.4.1)
 
 PROJECT(FFLv2-log)
 
-INCLUDE_DIRECTORIES(../install/FFLv2-lib/include)
-LINK_DIRECTORIES(../install/FFLv2-lib/libs)
+#  º”‘ÿπ´”√ø‚ FFLv2
+SET(CMAKE_MODULE_PATH  ${CMAKE_SOURCE_DIR}/../FFLv2-cmakemodule/ )
+INCLUDE(${CMAKE_MODULE_PATH}FFLv2lib.cmake)
+
+INCLUDE_DIRECTORIES(${FFLV2_LIB_INCLUDE_PATH})
+LINK_DIRECTORIES(${FFLV2_LIB_LIB_PATH})
 
 SET(LOCAL_SRC_FILES
    service/main.cpp;service/logServer.cpp
@@ -33,6 +37,6 @@ ADD_EXECUTABLE(FFLv2-log  ${LOCAL_SRC_FILES})
 TARGET_LINK_LIBRARIES(FFLv2-log FFL)
 
 add_custom_command(TARGET FFLv2-log POST_BUILD  
-  COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/Debug/
+  COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/${CMAKE_CFG_INTDIR}/
    )
 
