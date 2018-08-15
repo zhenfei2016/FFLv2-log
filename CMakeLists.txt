@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 PROJECT(FFLv2-log)
 
-#  ¼ÓÔØ¹«ÓÃ¿â FFLv2
+#  åŠ è½½å…¬ç”¨åº“ FFLv2
 SET(CMAKE_MODULE_PATH  ${CMAKE_SOURCE_DIR}/../FFLv2-cmakemodule/ )
 INCLUDE(${CMAKE_MODULE_PATH}FFLv2lib.cmake)
 
@@ -28,15 +28,42 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
-#  Ê bin
+#  ?bin
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 #   lib
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../lib)
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
+
+
+IF (WIN32)
 
 ADD_EXECUTABLE(FFLv2-log  ${LOCAL_SRC_FILES})
 TARGET_LINK_LIBRARIES(FFLv2-log FFL)
 
-add_custom_command(TARGET FFLv2-log POST_BUILD  
+add_library( FFLogLib SHARED loglib/logLib.cpp;loglib/logLib.h)
+TARGET_LINK_LIBRARIES(FFLogLib FFL)
+
+ADD_EXECUTABLE(FFLogLibTest loglib/logLibTest.cpp;loglib/main.cpp)
+TARGET_LINK_LIBRARIES(FFLogLibTest FFLogLib FFL)
+
+
+add_custom_command(TARGET FFLv2-log POST_BUILD
   COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/${CMAKE_CFG_INTDIR}/
    )
+
+ELSEIF (ANDROID)
+find_library(log-lib  log )
+add_library( FFLogLib SHARED 
+            loglib/logLib.cpp;loglib/logLib.h
+			loglib/jni/JNImain.cpp
+			loglib/jni/NativeFFLog.hpp;loglib/jni/NativeFFLog.cpp
+			loglib/jni/JavaFFLog.hpp;loglib/jni/JavaFFLog.cpp
+			loglib/jni/jnihelper/JniHelper.hpp;loglib/jni/jnihelper/JniHelper.cpp;
+			loglib/jni/jnihelper/JavaClass.hpp;loglib/jni/jnihelper/JavaClass.cpp;
+			loglib/jni/jnihelper/JavaObject.hpp;loglib/jni/jnihelper/JavaObject.cpp;
+			)
+TARGET_LINK_LIBRARIES(FFLogLib FFL  android ${log-lib})
+ENDIF()
+
+
+
 

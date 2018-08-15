@@ -1,0 +1,51 @@
+package ffl.log;
+
+import android.util.Log;
+
+import java.lang.ref.WeakReference;
+
+public class FFLog {
+
+//    public static int i(String tag, String msg){
+//        return  Log.i(tag,msg);
+//    }
+//
+//    public static int d(String tag, String msg){
+//        return  Log.d(tag,msg);
+//    }
+//
+//    public static int w(String tag, String msg){
+//        return  Log.w(tag,msg);
+//    }
+//
+//    public static int e(String tag, String msg){
+//        return  Log.e(tag,msg);
+//    }
+
+
+    private long mNativeThis;
+    public FFLog(){
+        native_setup(new WeakReference<FFLog>(this));
+    }
+
+    public void setTargetUrl(int type,String url){
+        native_setTargetUrl(type,url);
+    }
+    public void startup(){
+        native_startup();
+    }
+    public void shutdown(){
+        native_shutdown();
+    }
+
+    public void print(int level,String msg){
+        native_print(level,msg);
+    }
+
+    private native void native_setup(Object weakthis);
+    private native void native_setTargetUrl(int typt,String url);
+    private native void native_setLevel(int level);
+    private native int native_startup();
+    private native int native_shutdown();
+    private native void native_print(int level,String info);
+}
