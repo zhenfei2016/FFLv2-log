@@ -1,6 +1,6 @@
 #include "JniHelper.hpp"
 
-namespace android {
+namespace FFLandroid {
 	static JavaVM* gJVM;
     //
     //  获取，设置虚拟机
@@ -12,7 +12,6 @@ namespace android {
 	void setJavaVM(JavaVM *jvm){
 		gJVM=jvm;
 	}
-
     //
     //  获取当前线程的env
     //

@@ -16,7 +16,7 @@
 #include <jni.h>
 
 
-namespace android {
+namespace FFLandroid {
 	//
 //  获取当前线程的env
 //
@@ -29,7 +29,7 @@ namespace android {
 	public:
 		//
 		//  javaObj:java层对象，golbal对象
-		//   autoDel: 是否当这个JavaFFLPlayer对象删除的时候，需要自动删除java层对象
+		//   autoDel: 是否当这个javaObj对象删除的时候，需要自动删除java层对象
 		//
 		JavaObject(T& javaClass,jobject javaObj,bool autoDel):
 				mJavaClass(javaClass),

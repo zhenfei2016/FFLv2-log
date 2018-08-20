@@ -13,6 +13,15 @@ SET(LOCAL_SRC_FILES
    service/main.cpp;service/logServer.cpp
 )
 
+IF(WIN32)
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 ")
+SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
+ELSE()
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -fvisibility=hidden")
+SET(CMAKE_CXX_FLAGS "-std=c++11 -fvisibility=hidden ${CMAKE_CXX_FLAGS}")
+ENDIF()
+
+
 if (MSVC)
     add_definitions("/wd4819")
     set(CompilerFlags
@@ -28,40 +37,27 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
-#  ?bin
+#  输出的bin路径
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
-#   lib
+#  输出的lib路径
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
 
+ADD_SUBDIRECTORY(loglib)
 
 IF (WIN32)
-
-ADD_EXECUTABLE(FFLv2-log  ${LOCAL_SRC_FILES})
-TARGET_LINK_LIBRARIES(FFLv2-log FFL)
-
-add_library( FFLogLib SHARED loglib/logLib.cpp;loglib/logLib.h)
-TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 ADD_EXECUTABLE(FFLogLibTest loglib/logLibTest.cpp;loglib/main.cpp)
 TARGET_LINK_LIBRARIES(FFLogLibTest FFLogLib FFL)
 
+ADD_EXECUTABLE(FFLogServer  ${LOCAL_SRC_FILES})
+TARGET_LINK_LIBRARIES(FFLogServer FFL)
 
-add_custom_command(TARGET FFLv2-log POST_BUILD
+add_custom_command(TARGET FFLogServer POST_BUILD
   COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/${CMAKE_CFG_INTDIR}/
    )
 
 ELSEIF (ANDROID)
-find_library(log-lib  log )
-add_library( FFLogLib SHARED 
-            loglib/logLib.cpp;loglib/logLib.h
-			loglib/jni/JNImain.cpp
-			loglib/jni/NativeFFLog.hpp;loglib/jni/NativeFFLog.cpp
-			loglib/jni/JavaFFLog.hpp;loglib/jni/JavaFFLog.cpp
-			loglib/jni/jnihelper/JniHelper.hpp;loglib/jni/jnihelper/JniHelper.cpp;
-			loglib/jni/jnihelper/JavaClass.hpp;loglib/jni/jnihelper/JavaClass.cpp;
-			loglib/jni/jnihelper/JavaObject.hpp;loglib/jni/jnihelper/JavaObject.cpp;
-			)
-TARGET_LINK_LIBRARIES(FFLogLib FFL  android ${log-lib})
+
 ENDIF()
 
 

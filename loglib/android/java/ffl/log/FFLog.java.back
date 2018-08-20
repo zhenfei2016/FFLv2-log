@@ -23,6 +23,31 @@ public class FFLog {
 //    }
 
 
+    //
+    //  日志级别
+    //
+    final static int FFLOG_LEVEL_CRIT = 0;
+    final static int FFLOG_LEVEL_ERROR= 1;
+    final static int FFLOG_LEVEL_WARNING= 2;
+    final static int FFLOG_LEVEL_INFO= 3;
+    final static int FFLOG_LEVEL_DEBUG= 4;
+    final static int FFLOG_LEVEL_ALL= 5;
+
+
+    final static int FFLOG_ST_NONE = 0;
+    //
+    //  一个tcp连接，连接一个服务器  ip:port
+    //
+    final static int FFLOG_ST_TCP_CONNECT = 1;
+    //
+    //  已经创建的文件
+    //
+    final static int FFLOG_ST_EXIST_FILE = 2;
+    //
+    //  新创建一个文件
+    //
+    final static int FFLOG_ST_NEW_FILE = 3;
+
     private long mNativeThis;
     public FFLog(){
         native_setup(new WeakReference<FFLog>(this));

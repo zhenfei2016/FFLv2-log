@@ -11,6 +11,6 @@
 *
 */
 #include "JniHelper.hpp"
-namespace android {
+namespace FFLandroid {
 
 }

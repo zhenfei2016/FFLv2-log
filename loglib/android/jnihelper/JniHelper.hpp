@@ -7,7 +7,7 @@
 #include "JavaObject.hpp"
 
 
-namespace android {
+namespace FFLandroid {
 //
 //  获取，设置虚拟机
 //

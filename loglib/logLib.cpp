@@ -36,7 +36,7 @@ DECLSPEC  void  FFLogSetUrl(int type, const char* url) {
 	gInstance.mLogSender.setTargetUrl((FFL::LogSenderType)type, url);
 }
 DECLSPEC  void  FFLogSetLevel(int level) {
-	if (level >= FFL_LOG_LEVEL_CRIT && level < FFL_LOG_LEVEL_ALL) {
+	if (level >= FFL_LOG_LEVEL_CRIT && level <= FFL_LOG_LEVEL_ALL) {
 		FFL_LogSetLevel((FFL_LogLevel)level);
 	}
 }

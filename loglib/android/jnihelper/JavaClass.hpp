@@ -14,12 +14,11 @@
 #define _JNIJAVA_CLASS_HPP_
 #include <jni.h>
 
-
-namespace android {
+namespace FFLandroid {
 	class JavaClass {
 	public:
 		JavaClass(JNIEnv& env,const char* sign);
-		virtual ~JavaClass();	
+		virtual ~JavaClass();
 	public:
 		//
 		// 初始化，反初始化，用这个类的其他函数前需要执行的

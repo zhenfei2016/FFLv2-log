@@ -14,7 +14,7 @@
 #include <FFL.h>
 #include "JniHelper.hpp"
 
-namespace android {
+namespace FFLandroid {
 	JavaClass::JavaClass(JNIEnv& env,const char* sign) :mClass(NULL){
 		mClassSign = FFL_strdup(sign);
 	}
