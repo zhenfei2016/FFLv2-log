@@ -85,8 +85,7 @@ class HttpCommFileHandelr : public FFL::HttpFileHandler {
 		FFL_getCurrentProcessPath(processdir, 1023, processname);
         
         FFL::String fullpath=gExePath;
-        fullpath +="/../" +path;
-		strcat(processdir, path.c_str());
+        fullpath +="/../" +path;		
         
         printf("file:%s",fullpath.c_str());
 		res->response(fullpath.c_str());

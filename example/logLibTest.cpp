@@ -2,7 +2,7 @@
 #include <FFL_CommandHelper.h>
 #include <thread/FFL_Thread.hpp>
 #include <net/base/FFL_Net.h>
-#include "logLib.h"
+#include "../loglib/logLib.h"
 
 static int gExitFlag = 0;
 void quit(const char* args, void* userdata) {

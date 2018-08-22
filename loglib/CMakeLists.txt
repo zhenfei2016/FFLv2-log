@@ -33,20 +33,12 @@ add_library( FFLogLib SHARED logLib.cpp;logLib.h)
 TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 #编译静态库
-add_library( FFLogLib_static STATIC logLib.cpp;logLib.h)
-TARGET_LINK_LIBRARIES(FFLogLib FFL)
+#add_library( FFLogLib_static STATIC logLib.cpp;logLib.h)
+#TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 #添加android  jni支持
-IF (ANDROID)
-find_library(log-lib  log )
-add_library( FFLogLib_android SHARED 
-			android/JNImain.cpp
-			android/FFLogClass.hpp;android/FFLogClass.cpp
-			android/jnihelper/JniHelper.hpp;android/jnihelper/JniHelper.cpp;
-			android/jnihelper/JavaClass.hpp;android/jnihelper/JavaClass.cpp;
-			android/jnihelper/JavaObject.hpp;android/jnihelper/JavaObject.cpp;
-			)
-TARGET_LINK_LIBRARIES(FFLogLib_android FFLogLib android ${log-lib})
+IF(${BUILD_FFLOG_ANDROIDJNI} MATCHES "ON" )
+add_subdirectory(android)
 ENDIF()
 
 
