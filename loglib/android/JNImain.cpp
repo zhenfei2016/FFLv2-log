@@ -1,7 +1,4 @@
-#include <jni.h>
-#include <string>
 #include "FFLogClass.hpp"
-#include "jnihelper/JniHelper.hpp"
 
 extern "C" JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved){
     JNIEnv* env = NULL;

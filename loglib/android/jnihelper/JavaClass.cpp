@@ -55,6 +55,29 @@ namespace FFLandroid {
 			JNIdeleteGlobalRef(env, mClass);
 		}
 	}
+
+	//
+//  进行初始化，反初始化具体逻辑
+//
+	bool JavaClass::onInit(JNIEnv& env){
+		importJavaMethod(env);
+
+		int methodNum=0;
+		JNINativeMethod* methodList=getExportMethods(&methodNum);
+		exportNativeMethod(env,methodList,methodNum);
+		return  true;
+	}
+	void JavaClass::onUninit(JNIEnv& env){
+	}
+	//
+	//  导入的java层函数
+	//
+	JNIJavaMethod* JavaClass::getImportMethods(int32_t* count){
+		if(count){
+			*count=0;
+		}
+		return NULL;
+	}
 	//
 	//  丢出一个异常
 	//
@@ -108,6 +131,27 @@ namespace FFLandroid {
 	//
 	bool JavaClass::exportNativeMethod(JNIEnv& env,JNINativeMethod* methodList, int count) {
 		env.RegisterNatives(mClass, methodList, count);
+		return true;
+	}
+	//
+	//  导入java层函数
+	//
+	bool JavaClass::importJavaMethod(JNIEnv& env){
+		int count=0;
+		JNIJavaMethod* methodList=getImportMethods(&count);
+		if(count<=0 || methodList==NULL){
+			return true;
+		}
+
+		JNIJavaMethod* method=NULL;
+		for(int i=0;i<count ;i++){
+			method=methodList+i;
+			if(method->mFlag==JNI_INSTANCE_METHDO){
+				methodList->mMethodId=getMethodId(env, methodList->mMethodName, methodList->mMethosSign);
+			}else if(method->mFlag==JNI_STATIC_METHDO) {
+				methodList->mMethodId=getStaticMethodId(env, methodList->mMethodName, methodList->mMethosSign);
+			}
+		}
 		return true;
 	}
 	//

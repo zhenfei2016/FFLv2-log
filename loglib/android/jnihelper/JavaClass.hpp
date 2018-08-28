@@ -15,6 +15,36 @@
 #include <jni.h>
 
 namespace FFLandroid {
+
+	enum JNIJavaMethodFlag{
+		//
+		//  实例的函数
+		//
+		JNI_INSTANCE_METHDO=0,
+		//
+		//  静态函数
+		//
+		JNI_STATIC_METHDO=1,
+
+	};
+	//
+	//  java层导入函数的定义
+	//
+	class JNIJavaMethod{
+	public:
+		JNIJavaMethod(){
+			mMethodName=0;
+			mMethosSign=0;
+			mFlag=JNI_INSTANCE_METHDO;
+		}
+
+		const char* mMethodName;
+		const char* mMethosSign;
+		JNIJavaMethodFlag mFlag;
+
+		jmethodID mMethodId;
+	} ;
+
 	class JavaClass {
 	public:
 		JavaClass(JNIEnv& env,const char* sign);
@@ -29,8 +59,17 @@ namespace FFLandroid {
 		//
 		//  进行初始化，反初始化具体逻辑
 		//
-		virtual bool onInit(JNIEnv& env)=0;
-		virtual void onUninit(JNIEnv& env)=0;
+		virtual bool onInit(JNIEnv& env);
+		virtual void onUninit(JNIEnv& env);
+
+		//
+		//  class导出的native函数列表
+		//
+		virtual JNINativeMethod* getExportMethods(int32_t* count)=0;
+		//
+		//  导入的java层函数
+		//
+		virtual JNIJavaMethod* getImportMethods(int32_t* count);
 	public:
 		jclass getJClass() const {
 			return  mClass;
@@ -43,7 +82,11 @@ namespace FFLandroid {
 		//
 		//  导出一系列native层函数
 		//
-		bool exportNativeMethod(JNIEnv& env,JNINativeMethod* methodList, int count);		
+		bool exportNativeMethod(JNIEnv& env,JNINativeMethod* methodList, int count);
+		//
+		//  导入java层函数
+		//
+		bool importJavaMethod(JNIEnv& env);
 	public:
 		//
 		//  丢出一个异常
