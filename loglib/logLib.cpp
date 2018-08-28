@@ -59,7 +59,7 @@ extern "C" DECLSPEC void  FFLogPrintCri(const char* format, ...) {
 }
 
 extern "C" DECLSPEC void  FFLogPrintErr(const char* format, ...) {
-	if (FFL_LogGetLevel() > FFLOG_LEVEL_ERROR) {
+	if (FFL_LogGetLevel() > FFL_LOG_LEVEL_ERROR) {
 		va_list args;
 		va_start(args, format);
 		FFL_LogPrintV(FFLOG_LEVEL_ERROR, format, args);
@@ -68,7 +68,7 @@ extern "C" DECLSPEC void  FFLogPrintErr(const char* format, ...) {
 }
 
 extern "C" DECLSPEC void  FFLogPrintWar(const char* format, ...) {
-	if (FFL_LogGetLevel() > FFLOG_LEVEL_WARNING) {
+	if (FFL_LogGetLevel() > FFL_LOG_LEVEL_WARNING) {
 		va_list args;
 		va_start(args, format);
 		FFL_LogPrintV(FFLOG_LEVEL_WARNING, format, args);
@@ -77,7 +77,7 @@ extern "C" DECLSPEC void  FFLogPrintWar(const char* format, ...) {
 }
 
 extern "C" DECLSPEC void  FFLogPrintInf(const char* format, ...) {
-	if (FFL_LogGetLevel() > FFLOG_LEVEL_INFO) {
+	if (FFL_LogGetLevel() > FFL_LOG_LEVEL_INFO) {
 		va_list args;
 		va_start(args, format);
 		FFL_LogPrintV(FFLOG_LEVEL_INFO, format, args);
@@ -87,7 +87,7 @@ extern "C" DECLSPEC void  FFLogPrintInf(const char* format, ...) {
 
 
 extern "C" DECLSPEC void  FFLogPrintDbg(const char* format, ...) {
-	if (FFL_LogGetLevel() > FFLOG_LEVEL_DEBUG) {
+	if (FFL_LogGetLevel() > FFL_LOG_LEVEL_DEBUG) {
 		va_list args;
 		va_start(args, format);
 		FFL_LogPrintV(FFLOG_LEVEL_DEBUG, format, args);

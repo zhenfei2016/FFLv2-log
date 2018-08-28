@@ -5,17 +5,6 @@
 JavaFFLogClass::JavaFFLogClass(JNIEnv &env):FFLandroid::JavaClass(env,"ffl/log/FFLog"){
 }
 //
-//  进行初始化，反初始化具体逻辑
-//
-bool JavaFFLogClass::onInit(JNIEnv& env){
-    int methodNum=0;
-    JNINativeMethod* methodList=getExportMethods(&methodNum);
-    exportNativeMethod(env,methodList,methodNum);
-    return  true;
-}
-void JavaFFLogClass::onUninit(JNIEnv& env){
-}
-//
 //  获取导出的native层函数表
 //
 JNINativeMethod* JavaFFLogClass::getExportMethods(int32_t* count){

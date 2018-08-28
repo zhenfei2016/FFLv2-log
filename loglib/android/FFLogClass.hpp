@@ -1,4 +1,3 @@
-
 #ifndef _JAVA_FFLOG_CLASS_HPP_
 #define _JAVA_FFLOG_CLASS_HPP_
 
@@ -17,15 +16,9 @@ public:
     }
 protected:
     //
-    //  进行初始化，反初始化具体逻辑
-    //
-    virtual bool onInit(JNIEnv& env);
-    virtual void onUninit(JNIEnv& env);
-protected:
-    //
     //  获取导出的native层函数表
     //
-    virtual JNINativeMethod* getExportMethods(int32_t* count);
+    JNINativeMethod* getExportMethods(int32_t* count);
     //
     //  native的函数
     //
