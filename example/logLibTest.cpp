@@ -1,3 +1,4 @@
+
 #include <FFL.h>
 #include <FFL_CommandHelper.h>
 #include <thread/FFL_Thread.hpp>
@@ -14,10 +15,19 @@ static int quitFlag(void* userdata) {
 	return gExitFlag;
 }
 
-static int gFilePathIndex = 1;
-void setTarget(const char* args, void* userdata) {	
-	char path[1024] = {};
-	sprintf(path, "d:\\logsender_%d.txt", gFilePathIndex++);
+
+static void getNewLogFilePath(char* path,size_t size){
+    static int gFilePathIndex = 1;
+    char processDir[1024]={};
+    FFL_getCurrentProcessPath(processDir, 1024, NULL);
+    snprintf(path,size, "%slogsender_%d.txt", processDir,gFilePathIndex++);
+
+}
+void setTarget(const char* args, void* userdata) {
+ 
+    char path[1024]={};
+    getNewLogFilePath(path, 1024);
+   
 	FFLogSetUrl(FFLOG_ST_NEW_FILE, path);
 }
 
@@ -39,7 +49,7 @@ public:
 };
 int FFL_main() {
 	//
-	//  Ä£ÄâÈÕÖ¾ÊäÈë
+	//  æ¨¡æ‹Ÿæ—¥å¿—è¾“å…¥
 	//
 	FFL::sp<TestThread> testThread = new TestThread();
 	testThread->run("test");
@@ -47,11 +57,13 @@ int FFL_main() {
 	//
 	//
 	//
-	FFLogSetUrl(FFLOG_ST_NEW_FILE, "d:\\logsender_0.txt");
+    char path[1024]={};
+    getNewLogFilePath(path, 1024);
+	FFLogSetUrl(FFLOG_ST_NEW_FILE, path);
 	FFLogSetLevel(FFLOG_LEVEL_ALL);
 	FFLogCreateInstance();
 	//
-	//  ´òÓ¡Ò»ÏÂ°ïÖúº¯Êı
+	//  æ‰“å°ä¸€ä¸‹å¸®åŠ©å‡½æ•°
 	//
 	FFL_cmdUsage(gCmdOption);
 	FFL_cmdLooper(gCmdOption,0, quitFlag);
