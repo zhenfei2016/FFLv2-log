@@ -1,9 +1,8 @@
-
 #include <FFL.h>
 #include <FFL_CommandHelper.h>
 #include <thread/FFL_Thread.hpp>
 #include <net/base/FFL_Net.h>
-#include "../loglib/logLib.h"
+#include "../loglib/FFLv2Log.h"
 
 static int gExitFlag = 0;
 void quit(const char* args, void* userdata) {
@@ -61,13 +60,13 @@ int FFL_main() {
     getNewLogFilePath(path, 1024);
 	FFLogSetUrl(FFLOG_ST_NEW_FILE, path);
 	FFLogSetLevel(FFLOG_LEVEL_ALL);
-	FFLogCreateInstance();
+	FFLogSetup();
 	//
 	//  打印一下帮助函数
 	//
 	FFL_cmdUsage(gCmdOption);
 	FFL_cmdLooper(gCmdOption,0, quitFlag);
-	FFLogDestroyInstance(0);
+	FFLogTerminate();
 	testThread->requestExitAndWait();
 
 	return 0;

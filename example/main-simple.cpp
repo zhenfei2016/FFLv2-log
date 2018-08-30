@@ -11,7 +11,7 @@
 *
 */
 #include <stdio.h>
-#include "../loglib/logLib.h"
+#include "../loglib/FFLv2Log.h"
 
 extern "C" int main(int argc ,const char* argv[]) {			
 	char logPath[1024] = {};
@@ -24,7 +24,7 @@ extern "C" int main(int argc ,const char* argv[]) {
 	//  设置目标为创建一个新的日志文件
 	//
 	FFLogSetUrl(FFLOG_ST_NEW_FILE,logPath);
-	void* log=FFLogCreateInstance();
+	FFLogSetup();
 	
 
 	FFLOG_CRIT("crit=%d",i++);
@@ -39,6 +39,6 @@ extern "C" int main(int argc ,const char* argv[]) {
 	printf("press any key exit");
 	getchar();
 
-	FFLogDestroyInstance(log);	
+	FFLogTerminate();	
 	return 0;
 }

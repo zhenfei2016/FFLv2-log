@@ -27,8 +27,8 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
-SET(LOCAL_SRC_FILES logLib.cpp;logLib.h)
-AUX_SOURCE_DIRECTORY(./logsender/ DIR_SRCS)
+SET(LOCAL_SRC_FILES ./source/FFLv2Log.cpp;FFLv2Log.h)
+AUX_SOURCE_DIRECTORY(./source/logsender/ DIR_SRCS)
 SET(LOCAL_SRC_FILES ${DIR_SRCS} ${LOCAL_SRC_FILES})
 
 
@@ -42,7 +42,7 @@ TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 #添加android  jni支持
 IF(${BUILD_FFLOG_ANDROIDJNI} MATCHES "ON" )
-add_subdirectory(android)
+add_subdirectory(android_jni)
 ENDIF()
 
 

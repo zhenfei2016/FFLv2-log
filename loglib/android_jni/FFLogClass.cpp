@@ -1,6 +1,6 @@
 #include "FFLogClass.hpp"
 #include <FFL.h>
-#include "../logLib.h"
+#include "../FFLv2Log.h"
 
 JavaFFLogClass::JavaFFLogClass(JNIEnv &env):FFLandroid::JavaClass(env,"ffl/log/FFLog"){
 }
@@ -35,10 +35,10 @@ void JavaFFLogClass::setLevel(JNIEnv* env, jclass thiz,jint level){
     FFLogSetLevel(level);
 }
 void JavaFFLogClass::startup(JNIEnv* env, jclass thiz){
-    FFLogCreateInstance();
+    FFLogSetup();
 }
 void JavaFFLogClass::shutdown(JNIEnv* env, jclass thiz){
-    FFLogDestroyInstance(0);
+    FFLogTerminate();
 }
 void JavaFFLogClass::print(JNIEnv* env, jclass thiz,jint level,jstring info){
     const char* nativeStr=env->GetStringUTFChars(info,NULL);
