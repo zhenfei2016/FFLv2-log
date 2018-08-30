@@ -27,13 +27,17 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
+SET(LOCAL_SRC_FILES logLib.cpp;logLib.h)
+AUX_SOURCE_DIRECTORY(./logsender/ DIR_SRCS)
+SET(LOCAL_SRC_FILES ${DIR_SRCS} ${LOCAL_SRC_FILES})
+
 
 #编译动态库
-add_library( FFLogLib SHARED logLib.cpp;logLib.h)
+add_library( FFLogLib SHARED ${LOCAL_SRC_FILES})
 TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 #编译静态库
-#add_library( FFLogLib_static STATIC logLib.cpp;logLib.h)
+#add_library( FFLogLib_static STATIC ${LOCAL_SRC_FILES})
 #TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 #添加android  jni支持

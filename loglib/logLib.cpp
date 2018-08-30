@@ -1,5 +1,5 @@
 #include <FFL.h>
-#include <logsender/FFL_LogSender.hpp>
+#include "logsender/LogSender.hpp"
 
 #define FFLOG_API_IMPLEMENT
 #include "logLib.h"
