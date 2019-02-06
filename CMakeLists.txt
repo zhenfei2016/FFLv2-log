@@ -1,22 +1,12 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-PROJECT(FFLv2-log)
-
-#  加载公用库 FFLv2
-SET(CMAKE_MODULE_PATH  ${CMAKE_SOURCE_DIR}/../FFLv2-cmakemodule/ )
-INCLUDE(${CMAKE_MODULE_PATH}FFLv2lib.cmake)
-
-INCLUDE_DIRECTORIES(${FFLV2_LIB_INCLUDE_PATH})
-LINK_DIRECTORIES(${FFLV2_LIB_LIB_PATH})
-
-SET(LOCAL_SRC_FILES
-   service/main.cpp;service/logServer.cpp
-)
+PROJECT(FFLv2-loglib)
 
 IF(WIN32)
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 ")
 SET(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 ELSE()
+#隐藏所有的默认符号
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -fvisibility=hidden")
 SET(CMAKE_CXX_FLAGS "-std=c++11 -fvisibility=hidden ${CMAKE_CXX_FLAGS}")
 ENDIF()
@@ -37,27 +27,34 @@ if (MSVC)
     endforeach()
 endif(MSVC)
 
-#  输出的bin路径
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
-#  输出的lib路径
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/../bin)
+SET(LOCAL_SRC_FILES 
+  ./lib/FFLog.cpp;include/FFLog.h  
+  ./lib/LogPacket.hpp;./lib/LogPacket.cpp
+  ./lib/LogUrl.hpp;./lib/LogUrl.cpp
+  
+  ./lib/LogSender.hpp;./lib/LogSender.cpp
+  ./lib/LogTrasport.hpp;./lib/LogTrasport.cpp 
+ 
+ ./lib/LogTrasportFile.hpp;./lib/LogTrasportFile.cpp   
+ ./lib/LogTrasportTcpClient.hpp;./lib/LogTrasportTcpClient.cpp  
+ 
+  )
 
-ADD_SUBDIRECTORY(loglib)
-ADD_SUBDIRECTORY(example)
 
-IF (ANDROID )
 
-ELSE()
 
-ADD_EXECUTABLE(FFLogServer  ${LOCAL_SRC_FILES})
-TARGET_LINK_LIBRARIES(FFLogServer FFL)
+FIND_PATH(FFLIB_INSTALL_DIR  include/FFL_lib.h e:/FFL_install/vs2015)
+INCLUDE_DIRECTORIES(${FFLIB_INSTALL_DIR}/include ./include)
+LINK_DIRECTORIES(${FFLIB_INSTALL_DIR}/lib)
 
-add_custom_command(TARGET FFLogServer POST_BUILD
-COMMAND  ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/web/ ${PROJECT_BINARY_DIR}/../bin/${CMAKE_CFG_INTDIR}/
-)
+#编译动态库
+add_library( FFLogLib SHARED ${LOCAL_SRC_FILES})
+TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
-ENDIF()
 
+
+ADD_EXECUTABLE(example1 examples/example1_main.cpp )
+TARGET_LINK_LIBRARIES(example1 FFL FFLogLib)
 
 
 
