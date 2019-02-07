@@ -26,7 +26,9 @@ namespace FFL {
 	bool LogUrl::isTcpClient(LogUrl* logUrl) {
 		return (logUrl != NULL && logUrl->mProtol.equal("tcp"));
 	}
-
+	bool LogUrl::isHttpClient(LogUrl* logUrl) {
+		return (logUrl != NULL && logUrl->mProtol.equal("http"));
+	}
 	bool LogUrl::parseUrl(const char* url) {
 		if (url == NULL || url[0] == NULL) {
 			return false;

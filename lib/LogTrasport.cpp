@@ -12,9 +12,11 @@
 */
 
 #include "LogTrasport.hpp"
+#include "LogUrl.hpp"
 #include "LogTrasportFile.hpp"
 #include "LogTrasportTcpClient.hpp"
-#include "LogUrl.hpp"
+#include "LogTrasportHttpClient.hpp"
+
 
 namespace FFL {
 	LogTranport::LogTranport(){
@@ -37,9 +39,13 @@ namespace FFL {
 			// file://
 			transport = new LogTranportFile(logUrl.mUrl.string()+7);
 		}
-		else
-		{
-
+		else if (LogUrl::isHttpClient(&logUrl)){
+			// http://
+			transport = new LogTranportHttpClient(logUrl);
+		}
+		else if (LogUrl::isTcpClient(&logUrl)) {
+			// tcp://
+			transport = new LogTranportTcpClient(logUrl);
 		}
 
 		//transport = new LogTranportHttpClient(logUrl);

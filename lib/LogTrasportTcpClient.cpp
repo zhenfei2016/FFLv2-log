@@ -14,7 +14,7 @@
 
 namespace FFL {
 	LogTranportTcpClient::LogTranportTcpClient(const LogUrl& url):mClient(NULL){
-		mServerUrl=url.mUrl.string() + url.mProtol.size();
+		mServerUrl=url.mUrl.string() + url.mProtol.size()+3;
 	}
 	LogTranportTcpClient::~LogTranportTcpClient() {
 		disConnect();
@@ -23,8 +23,8 @@ namespace FFL {
 	//  发送实现函数
 	//
 	bool LogTranportTcpClient::sendPacket(FFL::sp<LogPacket>& packet) {
-		if(connect()){
-
+		if(!connect()){
+			return false;
 		}
 
 		if (mClient != NULL) {
@@ -44,7 +44,11 @@ namespace FFL {
 		String ip;
 		int16_t port = 0;
 		FFL_parseHostport(mServerUrl, ip, port);
-		TcpClient::connect(ip, port, *mClient);
+		if (FFL_OK != TcpClient::connect(ip, port, *mClient)) {
+			FFL_SafeFree(mClient);
+			return false;
+		}
+
 		return true;
 	}
 	void LogTranportTcpClient::disConnect() {

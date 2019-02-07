@@ -33,6 +33,10 @@ namespace FFL {
 	//  startup中设置，会更新目标文件的
 	//
 	bool LogSender::setUrl(const char* url) {		
+		if (!mTranport.isEmpty()) {
+			return false;
+		}
+
 		mTranport = LogTranport::create(url, this);
 		return !mTranport.isEmpty();
 	}	
@@ -126,6 +130,7 @@ namespace FFL {
 			mTranport->sendPacket(packet);
 		}
 		else {
+			mTranport = NULL;
 			return false;
 		}
 		

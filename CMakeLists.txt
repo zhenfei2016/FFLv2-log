@@ -37,7 +37,7 @@ SET(LOCAL_SRC_FILES
  
  ./lib/LogTrasportFile.hpp;./lib/LogTrasportFile.cpp   
  ./lib/LogTrasportTcpClient.hpp;./lib/LogTrasportTcpClient.cpp  
- 
+ ./lib/LogTrasportHttpClient.hpp;./lib/LogTrasportHttpClient.cpp   
   )
 
 
@@ -55,6 +55,9 @@ TARGET_LINK_LIBRARIES(FFLogLib FFL)
 
 ADD_EXECUTABLE(example1 examples/example1_main.cpp )
 TARGET_LINK_LIBRARIES(example1 FFL FFLogLib)
+
+ADD_EXECUTABLE(example_httpserver examples/example_httpserver.cpp )
+TARGET_LINK_LIBRARIES(example_httpserver FFL FFLogLib)
 
 
 

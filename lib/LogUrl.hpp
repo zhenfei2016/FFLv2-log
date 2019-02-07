@@ -24,6 +24,7 @@ namespace FFL {
 	public:
 		bool static isFile(LogUrl* logUrl);
 		bool static isTcpClient(LogUrl* logUrl);
+		bool static isHttpClient(LogUrl* logUrl);
 
 	public:
 		bool parseUrl(const char* url);
