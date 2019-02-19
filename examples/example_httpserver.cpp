@@ -14,8 +14,17 @@ public:
 	virtual bool onHttpQuery(FFL::HttpRequest* request) {
 		FFL::HttpUrl url;
 		request->getUrl(url);
+		
 
-		url.mQuery;
+		FFL::HttpHeader header;
+		request->getHeader(header);
+
+		uint8_t buffer[4096] = {};
+		size_t bufSize = 0;
+		int32_t requestSize = header.getContentLength();
+		request->readContent(buffer, requestSize, &bufSize);
+		//FFL::sp<HttpResponse> response=request->makeResponse();
+
 		return false;
 	}
 

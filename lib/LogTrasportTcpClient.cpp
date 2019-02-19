@@ -30,6 +30,9 @@ namespace FFL {
 		if (mClient != NULL) {
 			String info;
 			packet->toString(info);
+			//
+			//  数据量不是很大不判断是否成功了
+			//
 			mClient->write((void*)info.string(), info.size(), NULL);
 		}
 		return true;
